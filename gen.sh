@@ -1,6 +1,11 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
+in="posts"
+out="out"
 
-mkdir "out"
-for x in ./posts/*.md; do
-  pandoc -s "$x" -o "out/$(basename "$x" ".md").html"
+for x in ./$in/**/*.md; do
+  newfile="$(basename "$(echo "$x" | sed "s/$in/$out/")" ".md").html"
+  dir="$(dirname $x | sed "s/$in/$out/")"
+
+  mkdir -p "$dir" 2>/dev/null
+  pandoc -s "$x" -o "$dir/$newfile"
 done
